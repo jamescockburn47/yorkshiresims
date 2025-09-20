@@ -1,5 +1,6 @@
 import { createNanoEvents } from 'nanoevents'
-import { events, Season } from '../events'
+import { events } from '../events'
+import type { Season } from '../events'
 
 export type GameEventType = 'festival' | 'weather' | 'logistics' | 'wildlife' | 'heritage'
 
@@ -100,5 +101,6 @@ events.on('dayChanged', (d) => {
 
 // initial schedule
 scheduleFestivalsFor(currentSeason)
+
 
 

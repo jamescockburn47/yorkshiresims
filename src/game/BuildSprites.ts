@@ -1,7 +1,8 @@
 import Phaser from 'phaser'
 
 function createVoxelSprite(scene: Phaser.Scene, key: string, w: number, h: number, color: number) {
-  const g = scene.make.graphics({ x: 0, y: 0, add: false })
+  const g = scene.add.graphics()
+  g.setVisible(false)
   g.fillStyle(color, 1)
   g.fillRect(0, 0, w, h)
   // Fake iso/voxel shading
@@ -25,5 +26,6 @@ export function ensureBuildSprites(scene: Phaser.Scene, tileSize: number) {
   if (!mgr.exists(wallKey)) createVoxelSprite(scene, wallKey, tileSize, tileSize, 0x8a8a8a)
   return { cottageKey, wallKey }
 }
+
 
 

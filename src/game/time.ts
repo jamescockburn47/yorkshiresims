@@ -1,4 +1,5 @@
-import { events, Season } from './events'
+import { events } from './events'
+import type { Season } from './events'
 
 // 5 minutes per in-game day
 const DAY_LENGTH_MS = 5 * 60 * 1000
@@ -37,5 +38,6 @@ export class TimeSystem {
 
   get season() { return this.currentSeason }
 }
+
 
 

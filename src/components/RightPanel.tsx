@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import { events, Season } from '../game/events'
+import { events } from '../game/events'
+import type { Season } from '../game/events'
 
 export default function RightPanel() {
   const [time01, setTime01] = useState(0)

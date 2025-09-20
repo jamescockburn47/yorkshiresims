@@ -1,5 +1,5 @@
 import { fbm2 } from './noise'
-import { Season } from '../events'
+import type { Season } from '../events'
 
 export type TileType = 'heather' | 'grass' | 'rock' | 'water' | 'path'
 
@@ -57,5 +57,6 @@ export function getMoorsPalette(season: Season) {
       return { heather: 0x6d5c72, grass: 0x3b4d36, rock: 0x8a8a8a, water: 0x335d7f, path: 0x7d6c55 }
   }
 }
+
 
 

@@ -1,4 +1,5 @@
-import { events, Season } from '../game/events'
+import { events } from '../game/events'
+import type { Season } from '../game/events'
 import { getTodayEvents, onEventsChanged } from '../game/state/events'
 
 class AudioManagerImpl {
@@ -12,7 +13,7 @@ class AudioManagerImpl {
   private pubGain: GainNode | null = null
   private pubFilter: BiquadFilterNode | null = null
   private pubNoise: AudioBufferSourceNode | null = null
-  private sheepTimer: number | null = null
+  // timer id is not used elsewhere; no storage to keep TS clean
   private processedEventIds: Set<string> = new Set()
 
   async start() {
@@ -20,24 +21,25 @@ class AudioManagerImpl {
     const Ctx = (window as any).AudioContext || (window as any).webkitAudioContext
     if (!Ctx) return
     this.ctx = new Ctx()
-    this.masterGain = this.ctx.createGain()
+    const ctx = this.ctx!
+    this.masterGain = ctx.createGain()
     this.masterGain.gain.value = 0.18
-    this.masterGain.connect(this.ctx.destination)
+    this.masterGain.connect(ctx.destination)
 
     // Wind: filtered noise with gentle LFO on amplitude
     const noise = this.createNoiseBufferSource()
-    this.windFilter = this.ctx.createBiquadFilter()
+    this.windFilter = ctx.createBiquadFilter()
     this.windFilter.type = 'lowpass'
     this.windFilter.frequency.value = 1200
     this.windFilter.Q.value = 0.0001
 
-    this.windGain = this.ctx.createGain()
+    this.windGain = ctx.createGain()
     this.windGain.gain.value = 0.6
 
     // LFO to wind gain for gusts
-    this.lfo = this.ctx.createOscillator()
+    this.lfo = ctx.createOscillator()
     this.lfo.frequency.value = 0.05
-    this.lfoGain = this.ctx.createGain()
+    this.lfoGain = ctx.createGain()
     this.lfoGain.gain.value = 0.15
     this.lfo.connect(this.lfoGain)
     this.lfoGain.connect(this.windGain.gain)
@@ -162,7 +164,7 @@ class AudioManagerImpl {
     if (!this.ctx) return
     const schedule = () => {
       const delay = 7000 + Math.random() * 15000
-      this.sheepTimer = window.setTimeout(() => {
+      window.setTimeout(() => {
         this.bleat()
         schedule()
       }, delay)

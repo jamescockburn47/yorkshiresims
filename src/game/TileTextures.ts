@@ -1,7 +1,8 @@
 import Phaser from 'phaser'
 
 export function createTileTexture(scene: Phaser.Scene, key: string, size: number, baseColor: number) {
-  const g = scene.make.graphics({ x: 0, y: 0, add: false })
+  const g = scene.add.graphics()
+  g.setVisible(false)
   // Base
   g.fillStyle(baseColor, 1)
   g.fillRect(0, 0, size, size)
@@ -36,5 +37,6 @@ export function ensureTileTextures(scene: Phaser.Scene, palette: Record<string, 
   }
   return keys
 }
+
 
 

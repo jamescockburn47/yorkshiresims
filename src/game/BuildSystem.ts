@@ -1,6 +1,7 @@
 import Phaser from 'phaser'
-import { BuildType, events } from './events'
-import { TileType } from './biome/moors'
+import { events } from './events'
+import type { BuildType } from './events'
+import type { TileType } from './biome/moors'
 import { ensureBuildSprites } from './BuildSprites'
 
 export class BuildSystem {
@@ -8,8 +9,10 @@ export class BuildSystem {
   private preview?: Phaser.GameObjects.Image
   private tileSize: number
   private getTileAt: (wx: number, wy: number) => TileType | null
+  private scene: Phaser.Scene
 
-  constructor(private scene: Phaser.Scene, tileSize: number, getTileAt: (wx: number, wy: number) => TileType | null) {
+  constructor(scene: Phaser.Scene, tileSize: number, getTileAt: (wx: number, wy: number) => TileType | null) {
+    this.scene = scene
     this.tileSize = tileSize
     this.getTileAt = getTileAt
     events.on('buildSelect', (t) => this.setMode(t))

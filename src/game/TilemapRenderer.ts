@@ -1,9 +1,12 @@
 import Phaser from 'phaser'
-import { TilemapData } from './biome/moors'
+import type { TilemapData } from './biome/moors'
 import { ensureTileTextures } from './TileTextures'
 
 export class TilemapRenderer {
-  constructor(private scene: Phaser.Scene) {}
+  private scene: Phaser.Scene
+  constructor(scene: Phaser.Scene) {
+    this.scene = scene
+  }
 
   draw(tilemap: TilemapData, tileSize: number, palette: Record<string, number>) {
     const keys = ensureTileTextures(this.scene, palette, tileSize)

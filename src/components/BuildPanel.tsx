@@ -1,4 +1,5 @@
-import { events, BuildType } from '../game/events'
+import { events } from '../game/events'
+import type { BuildType } from '../game/events'
 
 export default function BuildPanel() {
   const select = (t: BuildType | null) => events.emit('buildSelect', t)

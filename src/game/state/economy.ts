@@ -1,5 +1,6 @@
 import { createNanoEvents } from 'nanoevents'
-import { events, Season } from '../events'
+import { events } from '../events'
+import type { Season } from '../events'
 
 export type ResourceKey = 'stone' | 'timber' | 'wool' | 'milk' | 'barley' | 'money'
 
@@ -71,5 +72,6 @@ function onDayChange() {
 
 events.on('seasonChanged', (s) => { currentSeason = s })
 events.on('dayChanged', () => onDayChange())
+
 
 
