@@ -13,6 +13,7 @@ const IMAGE_URLS = [
 ]
 
 import { seedVillagers } from '../game/state/villagers'
+import { AudioManager } from '../audio/AudioManager'
 
 export default function Intro({ onStart }: IntroProps) {
   const [idx, setIdx] = useState(0)
@@ -25,7 +26,7 @@ export default function Intro({ onStart }: IntroProps) {
     return () => clearInterval(t)
   }, [images.length])
 
-  const startGame = () => { seedVillagers(6); onStart() }
+  const startGame = async () => { await AudioManager.start(); seedVillagers(6); onStart() }
   return (
     <div className="appRoot">
       <div className="introContainer">
