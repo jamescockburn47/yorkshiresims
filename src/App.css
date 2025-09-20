@@ -100,6 +100,24 @@
   display: flex;
   gap: 8px;
 }
+
+.nameInput {
+  flex: 1;
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid #2b3a2f;
+  background: #0e1611;
+  color: #e8f3ea;
+}
+.villagerRow {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.roleText {
+  opacity: 0.8;
+}
 .carousel {
   position: absolute;
   inset: 0;

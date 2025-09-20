@@ -12,6 +12,8 @@ const IMAGE_URLS = [
   'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Whitby_Abbey_2008.jpg/640px-Whitby_Abbey_2008.jpg',
 ]
 
+import { seedVillagers } from '../game/state/villagers'
+
 export default function Intro({ onStart }: IntroProps) {
   const [idx, setIdx] = useState(0)
   const images = useMemo(() => IMAGE_URLS, [])
@@ -23,13 +25,14 @@ export default function Intro({ onStart }: IntroProps) {
     return () => clearInterval(t)
   }, [images.length])
 
+  const startGame = () => { seedVillagers(6); onStart() }
   return (
     <div className="appRoot">
       <div className="introContainer">
         <div className="introOverlay">
           <h1 className="introTitle">Yorkshire Sims: Moors</h1>
           <p className="introSubtitle">Cozy co-op village-builder on the Moors</p>
-          <button className="primaryButton" onClick={onStart}>Start</button>
+          <button className="primaryButton" onClick={startGame}>Start</button>
         </div>
         <div className="carousel">
           {images.map((src, i) => (

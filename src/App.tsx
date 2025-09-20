@@ -2,6 +2,7 @@ import './App.css'
 import GameCanvas from './components/GameCanvas'
 import RightPanel from './components/RightPanel'
 import BuildPanel from './components/BuildPanel'
+import VillagersPanel from './components/VillagersPanel'
 import Intro from './components/Intro'
 import { useState } from 'react'
 
@@ -16,6 +17,7 @@ function App() {
       <div className="rightColumn">
         <RightPanel />
         <BuildPanel />
+        <VillagersPanel />
       </div>
     </div>
   )
