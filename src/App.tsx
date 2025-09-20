@@ -4,6 +4,7 @@ import RightPanel from './components/RightPanel'
 import BuildPanel from './components/BuildPanel'
 import VillagersPanel from './components/VillagersPanel'
 import ResourcesPanel from './components/ResourcesPanel'
+import EventsPanel from './components/EventsPanel'
 import Intro from './components/Intro'
 import { useState } from 'react'
 
@@ -19,6 +20,7 @@ function App() {
         <RightPanel />
         <BuildPanel />
         <ResourcesPanel />
+        <EventsPanel />
         <VillagersPanel />
       </div>
     </div>
