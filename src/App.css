@@ -1,0 +1,147 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+/* App layout */
+.appRoot {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+}
+
+.gameShell {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+.flex1 {
+  flex: 1;
+}
+
+/* Intro */
+.introContainer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #0e1510;
+}
+.introOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  z-index: 2;
+  background: linear-gradient(180deg, rgba(14,21,16,0.6) 0%, rgba(14,21,16,0.2) 100%);
+}
+.introTitle {
+  margin: 0;
+  font-size: 44px;
+  letter-spacing: 0.5px;
+}
+.introSubtitle {
+  margin: 0 0 8px 0;
+  opacity: 0.85;
+}
+.primaryButton {
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: 1px solid #3c5a42;
+  background: #23412a;
+  color: #e8f3ea;
+  cursor: pointer;
+}
+.primaryButton:hover {
+  background: #2a4d32;
+}
+.buildRow {
+  display: flex;
+  gap: 8px;
+}
+.carousel {
+  position: absolute;
+  inset: 0;
+}
+.carouselImage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 600ms ease;
+}
+.carouselImage.active {
+  opacity: 0.9;
+}
+
+/* Right panel */
+.rightPanel {
+  width: 280px;
+  border-left: 1px solid #304034;
+  padding: 12px;
+  background: #0f1711;
+}
+.rightColumn {
+  display: flex;
+  flex-direction: column;
+}
+.panelTitle {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.progressTrack {
+  height: 8px;
+  background: #223026;
+  margin-top: 4px;
+}
+.progressBar {
+  height: 100%;
+  background: #6aa06f;
+}
+.progressBarFill {
+  height: 100%;
+  background: #6aa06f;
+}
