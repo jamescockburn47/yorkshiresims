@@ -118,6 +118,11 @@
 .roleText {
   opacity: 0.8;
 }
+.rowSpace {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
 .carousel {
   position: absolute;
   inset: 0;
