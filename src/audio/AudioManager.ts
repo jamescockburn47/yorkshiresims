@@ -1,4 +1,5 @@
 import { events, Season } from '../game/events'
+import { getTodayEvents, onEventsChanged } from '../game/state/events'
 
 class AudioManagerImpl {
   private ctx: AudioContext | null = null
@@ -8,6 +9,11 @@ class AudioManagerImpl {
   private lfo: OscillatorNode | null = null
   private lfoGain: GainNode | null = null
   private started = false
+  private pubGain: GainNode | null = null
+  private pubFilter: BiquadFilterNode | null = null
+  private pubNoise: AudioBufferSourceNode | null = null
+  private sheepTimer: number | null = null
+  private processedEventIds: Set<string> = new Set()
 
   async start() {
     if (this.started) return
@@ -46,6 +52,9 @@ class AudioManagerImpl {
     // React to season changes
     events.on('seasonChanged', (s) => this.applySeason(s))
     events.on('timeUpdated', (t) => this.applyTimeMod(t))
+    onEventsChanged(() => this.checkEventSounds())
+
+    this.startSheepLoop()
 
     this.started = true
   }
@@ -96,6 +105,100 @@ class AudioManagerImpl {
     const span = 0.03
     const rate = base + span * Math.sin(time01 * Math.PI * 2)
     this.lfo.frequency.setTargetAtTime(rate, this.ctx!.currentTime, 0.5)
+  }
+
+  // Pub ambience (toggle)
+  enablePubAmbience(on: boolean) {
+    if (!this.ctx || !this.masterGain) return
+    if (on) {
+      if (this.pubGain) return
+      this.pubGain = this.ctx.createGain()
+      this.pubGain.gain.value = 0.0
+      this.pubFilter = this.ctx.createBiquadFilter()
+      this.pubFilter.type = 'bandpass'
+      this.pubFilter.frequency.value = 300
+      this.pubFilter.Q.value = 0.7
+      this.pubNoise = this.createNoiseBufferSource()
+      this.pubNoise.connect(this.pubFilter)
+      this.pubFilter.connect(this.pubGain)
+      this.pubGain.connect(this.masterGain)
+      this.pubNoise.start()
+      // fade in
+      this.pubGain.gain.setTargetAtTime(0.25, this.ctx.currentTime, 1.0)
+    } else {
+      if (!this.pubGain) return
+      this.pubGain.gain.setTargetAtTime(0.0, this.ctx.currentTime, 0.5)
+      setTimeout(() => {
+        this.pubNoise?.stop()
+        this.pubNoise?.disconnect()
+        this.pubFilter?.disconnect()
+        this.pubGain?.disconnect()
+        this.pubNoise = null
+        this.pubFilter = null
+        this.pubGain = null
+      }, 800)
+    }
+  }
+
+  // Sheep bleat one-shot
+  private bleat() {
+    if (!this.ctx || !this.masterGain) return
+    const o1 = this.ctx.createOscillator()
+    const g = this.ctx.createGain()
+    o1.type = 'triangle'
+    o1.frequency.value = 440 + Math.random() * 60
+    g.gain.value = 0
+    o1.connect(g)
+    g.connect(this.masterGain)
+    const now = this.ctx.currentTime
+    g.gain.setValueAtTime(0, now)
+    g.gain.linearRampToValueAtTime(0.15, now + 0.05)
+    g.gain.linearRampToValueAtTime(0.0, now + 0.35)
+    o1.start()
+    o1.stop(now + 0.4)
+  }
+
+  private startSheepLoop() {
+    if (!this.ctx) return
+    const schedule = () => {
+      const delay = 7000 + Math.random() * 15000
+      this.sheepTimer = window.setTimeout(() => {
+        this.bleat()
+        schedule()
+      }, delay)
+    }
+    schedule()
+  }
+
+  private trainWhistle() {
+    if (!this.ctx || !this.masterGain) return
+    const o = this.ctx.createOscillator()
+    const g = this.ctx.createGain()
+    o.type = 'sine'
+    o.frequency.value = 520
+    g.gain.value = 0
+    o.connect(g)
+    g.connect(this.masterGain)
+    const now = this.ctx.currentTime
+    // two-tone whistle
+    o.frequency.setValueAtTime(520, now)
+    o.frequency.linearRampToValueAtTime(760, now + 0.6)
+    o.frequency.linearRampToValueAtTime(520, now + 1.2)
+    g.gain.setValueAtTime(0, now)
+    g.gain.linearRampToValueAtTime(0.35, now + 0.1)
+    g.gain.linearRampToValueAtTime(0.0, now + 1.4)
+    o.start()
+    o.stop(now + 1.5)
+  }
+
+  private checkEventSounds() {
+    const today = getTodayEvents()
+    for (const e of today) {
+      if (e.title.includes('Steam Gala') && !this.processedEventIds.has(e.id)) {
+        this.trainWhistle()
+        this.processedEventIds.add(e.id)
+      }
+    }
   }
 }
 
